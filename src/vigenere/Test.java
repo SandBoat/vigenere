@@ -1,8 +1,13 @@
 package vigenere;
 
+import java.sql.Time;
+import java.util.Date;
+import java.util.Scanner;
+import java.util.Timer;
+
 /**
-* 测试类
-*/
+ * 测试类
+ */
 public class Test {
 	public static void main(String[] args) {
 		String text, key;
@@ -109,8 +114,9 @@ public class Test {
 				+ "And for the support of this declaration, with a firm reliance on the protection "
 				+ "of Divine Providence, we mutually pledge to each other our lives, our fortunes "
 				+ "and our sacred honor.";
+		
 		// 秘钥
-		key = "adgalksjg";
+		key = "helloWorld";
 
 		// 加密
 		EncryptDecrypt ed = new EncryptDecrypt();
@@ -118,6 +124,16 @@ public class Test {
 		text = ed.encrypt(text, key);
 
 		// 破译
+		long startTime = System.currentTimeMillis();// 获取当前时间
+
+		// key:helloWorld
+		// v1.0
+		// 运行时间 62ms、61ms、86ms、105ms、62ms
+		// v2.0 添加方法 ssumePacketLegth 用穷举的方法猜测短秘钥长度
+		// 运行时间 32ms、34ms、30ms、47ms、36ms
 		VigenereBreak vigenereBreak = new VigenereBreak(text);
+		long endTime = System.currentTimeMillis();
+		System.out.println("密文长度:" + text.length());
+		System.out.println("run time:" + (endTime - startTime) + "ms");
 	}
 }

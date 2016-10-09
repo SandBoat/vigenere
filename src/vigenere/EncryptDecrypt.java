@@ -1,5 +1,8 @@
 package vigenere;
 
+import java.sql.Array;
+import java.util.Arrays;
+
 /**
  * Vigenere 加密/解密
  */
@@ -25,7 +28,11 @@ public class EncryptDecrypt {
 		if (plaintext == null || plaintext == "") {
 			return "";
 		}
+		
+		// 预处理
 		plaintext = preDeal(plaintext);
+		key = preDeal(key);
+		key = preKey(key);
 
 		plaintextArr = new int[plaintext.length()]; // 用于储存明文的数组
 		ciphertextArr = new int[plaintext.length()]; // 用于储存明文的数组
@@ -98,6 +105,25 @@ public class EncryptDecrypt {
 		String dealAfter = "";
 		dealAfter = text.replaceAll("[^a-zA-Z]", "");
 		return dealAfter.toLowerCase();
+	}
+
+	/**
+	 * 预处理 去除秘钥中的重复字母
+	 * 
+	 * @param key
+	 *            秘钥
+	 * @return 去重后的秘钥
+	 */
+	public String preKey(String key) {
+		String newKey = "";
+		char keyChar;
+		for (int i = 0; i < key.length(); i++) {
+			keyChar = key.charAt(i);
+			if (newKey.indexOf(keyChar) == -1) {
+				newKey += keyChar;
+			}
+		}
+		return newKey;
 	}
 
 	/**

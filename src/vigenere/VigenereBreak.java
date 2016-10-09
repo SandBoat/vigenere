@@ -55,6 +55,12 @@ public class VigenereBreak {
 		int packetLength = 0; // 分组长度
 
 		int[] ciphertextArr = edDecrypt.convertToArr(ciphertext); // 密文数组
+		
+		// 推测秘钥长度
+		packetLength = assumePacketLegth(ciphertextArr);
+		if(packetLength > 0){
+			return packetLength;
+		}
 
 		int[] packetArr = new int[ciphertextArr.length - 2]; // 分组 以三个数字为一组
 		int[] sameArr = new int[100]; // 存储相同数字的下标
@@ -103,15 +109,27 @@ public class VigenereBreak {
 				}
 			}
 		}
-		// int maxNum = 0; // 相同公因数出现次数
-		// for (int i = 0; i < gcdArrCount.length; i++) {
-		// if (gcdArrCount[i] > maxNum) {
-		// maxNum = gcdArrCount[i];
-		// packetLength = gcdArr[i];
-		// }
-		// }
+		// 分组长度为 出现次数最多的公因数
 		packetLength = gcdArr[getMaxNums(gcdArrCount)];
 		return packetLength;
+	}
+
+	/**
+	 * 推测最大可能分组长度
+	 * 
+	 * @param ciphertext
+	 *            密文
+	 * @return 0：推测失败
+	 * @return other：推测的分组长度
+	 */
+	public int assumePacketLegth(int[] ciphertextArr) {
+		int maxAssumeLength = 9;
+		for(int i = 1;i<maxAssumeLength;i++){
+			if(getLc(ciphertextArr, i)>0.06){
+				return i;
+			}
+		}
+		return 0;
 	}
 
 	/**
